@@ -16,8 +16,6 @@ main() {
     esac
   fi
 
-  shift 1
-
   exit 0
 
 }
@@ -45,6 +43,7 @@ cloudflare_enable() {
   checksum="$(md5sum < <(echo "${cf_ips[*]}"))"
   echo "${checksum}" | tee "$HOME/ufw-cf.ip.checksum" >/dev/null 2>&1
 
+  return 0
 
 }
 
@@ -64,6 +63,8 @@ cloudflare_disable() {
   for cf_ip in ${cf_ips[@]}; do
     ufw delete allow proto tcp from ${cf_ip} to any port 80,443 comment 'Cloudflare IP'
   done
+
+  return 0
 
 }
 
@@ -91,6 +92,8 @@ cloudflare_update() {
   else
     echo "${checksum}" | tee "$HOME/ufw-cf.ip.checksum" >/dev/null 2>&1
   fi
+
+  return 0
 
 }
 
